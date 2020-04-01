@@ -1,0 +1,11 @@
+A navigation drawer is made up of the following components:
+
+An instance of the DrawerLayout component (activity_main.xml).
+An instance of the (NavigationView) component embedded as a child of the DrawerLayout.
+A menu resource file containing the options to be displayed within the navigation drawer(drawer_menu.xml).
+An optional layout resource file containing the content to appear in the header section of the navigation drawer (nav_header.xml).
+
+Dans (MainActivity.kt)
+A listener assigned to the NavigationView to detect when an item has been selected by the user (NavigationView.OnNavigationItemSelectedListener).
+An (ActionBarDrawerToggle) instance to connect and synchronize the navigation drawer to the app bar.
+The ActionBarDrawerToggle also displays the drawer indicator in the app bar which presents the drawer when tapped.

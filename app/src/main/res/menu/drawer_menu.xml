@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/ic_home_24dp"
+            android:id="@+id/home"
+            android:title="Buzz Me" />
+
+        <item android:title="Configuration BuzzMe">
+            <menu>
+                <item
+                    android:icon="@drawable/ic_alarm_black_24dp"
+                    android:id="@+id/nav_notif"
+                    android:title="Notifications" />
+                <item
+                    android:icon="@drawable/ic_phone_forward_24dp"
+                    android:id="@+id/nav_renvoi"
+                    android:title="Personnes à alerter" />
+            </menu>
+        </item>
+
+        <item android:title="Configuration SOS Manager">
+            <menu>
+                <item
+                    android:icon="@drawable/ic_watch_black_24dp"
+                    android:id="@+id/nav_sos"
+                    android:title="Configuration du boîtier" />
+            </menu>
+        </item>
+
+    </group>
+</menu>

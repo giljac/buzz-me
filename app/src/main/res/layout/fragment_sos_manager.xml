@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:text="Connecter"
+        app:layout_constraintBottom_toTopOf="@+id/statusView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/CustomButton" />
+
+    <ProgressBar
+        android:id="@+id/indeterminateBar"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_width="wrap_content"
+        android:progressTint="#C24513"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/statusView"
+        app:layout_constraintEnd_toStartOf="@+id/statusView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/statusView"
+        app:layout_optimizationLevel="chains"
+        style="?android:attr/progressBarStyle" />
+
+    <TextView
+        android:id="@+id/statusView"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_width="0dp"
+        android:text=" "
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/indeterminateBar"
+        app:layout_optimizationLevel="chains" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/btnConnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
