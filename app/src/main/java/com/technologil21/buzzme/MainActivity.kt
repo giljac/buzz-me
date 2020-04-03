@@ -2,10 +2,12 @@ package com.technologil21.buzzme
 
 import android.Manifest
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -18,14 +20,15 @@ import kotlinx.android.synthetic.main.toolbar.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
+    NavigationView.OnNavigationItemSelectedListener {
 
     private val TAG = "toto_main"
     private val SMS_PERM = 123
     private var isGrted = false
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private var mPreviousMenuItem: MenuItem? = null
-    var idFrag: Int = R.id.home
+    private var idFrag: Int = R.id.home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +38,13 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, N
         // Set a Toolbar to replace the ActionBar.
         setSupportActionBar(toolbar as Toolbar)
 
-        drawerToggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close)
+        drawerToggle = ActionBarDrawerToggle(
+            this,
+            drawer,
+            toolbar,
+            R.string.drawer_open,
+            R.string.drawer_close
+        )
         // Tie DrawerLayout events to the ActionBarToggle
         drawer.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
@@ -43,23 +52,16 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, N
         drawerToggle.isDrawerIndicatorEnabled = true
 
         nav_view.setNavigationItemSelectedListener(this)
-
-        checkMyPermissions()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            checkMyPermissions()
         //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, HomeFragment.newInstance()).commit()
+                .replace(R.id.fragment_container, HomeFragment.newInstance()).commit()
             mPreviousMenuItem = nav_view.menu.findItem(R.id.home)
             nav_view.setCheckedItem(R.id.home)
         }
     }
-
-//    private fun setupDrawerToggle(): ActionBarDrawerToggle {
-//        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
-//        // and will not render the hamburger icon without it.
-//        return ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close)
-//    }
-
     // `onPostCreate` called when activity start-up is complete after `onStart()`
     // NOTE 1: Make sure to override the method with only a single `Bundle` argument
     // Note 2: Make sure you implement the correct `onPostCreate(Bundle savedInstanceState)` method.
@@ -111,12 +113,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, N
             R.id.home -> selectedFragment = HomeFragment.newInstance()
             R.id.nav_renvoi -> selectedFragment = AlertListFragment()
             R.id.nav_notif -> selectedFragment = NotificationFragment()
-            R.id.nav_sos -> {
-                selectedFragment = SosManagerFragment()//;toolbar.visibility = GONE
-            }
+            R.id.nav_sos -> selectedFragment = SosManagerFragment()
             else -> selectedFragment = HomeFragment.newInstance()
         }
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment)
+            .commit()
     }
 
     override fun onBackPressed() {
@@ -124,9 +125,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, N
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             Log.d(TAG, "isDrawerOpen")
             drawer.closeDrawer(GravityCompat.START)
-        }
-        //sinon
-        else {
+        } else {
             //si navigation web
             if (idFrag == R.id.nav_sos) {
                 if (webView.canGoBack()) {
@@ -146,7 +145,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, N
     /*  Gestion des permissions
     * Pour permettre la surveillance et l'envoi des SMS d'alerte */
     //gestion des resultats de demande de permissions par EasyPermissions
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
@@ -154,11 +157,23 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, N
 
     //on verifie qu'on a les permissions necessaires a l'appli
     private fun checkMyPermissions() {
-        val perms = arrayOf(Manifest.permission.RECEIVE_SMS, Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_NOTIFICATION_POLICY, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_FINE_LOCATION)
+        val perms = arrayOf(
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.ACCESS_NOTIFICATION_POLICY,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
         if (EasyPermissions.hasPermissions(this, *perms)) {
             isGrted = true
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale), SMS_PERM, *perms)
+            EasyPermissions.requestPermissions(
+                this,
+                getString(R.string.rationale),
+                SMS_PERM,
+                *perms
+            )
         }
     }
 

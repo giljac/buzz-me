@@ -3,29 +3,29 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/ic_home_24dp"
             android:id="@+id/home"
-            android:title="Buzz Me" />
+            android:icon="@drawable/ic_home_24dp"
+            android:title="@string/app_name" />
 
-        <item android:title="Configuration BuzzMe">
+        <item android:title="@string/configuration_buzzme">
             <menu>
                 <item
-                    android:icon="@drawable/ic_alarm_black_24dp"
                     android:id="@+id/nav_notif"
-                    android:title="Notifications" />
+                    android:icon="@drawable/ic_alarm_black_24dp"
+                    android:title="@string/notifications" />
                 <item
-                    android:icon="@drawable/ic_phone_forward_24dp"
                     android:id="@+id/nav_renvoi"
-                    android:title="Personnes à alerter" />
+                    android:icon="@drawable/ic_phone_forward_24dp"
+                    android:title="@string/personnes_alerter" />
             </menu>
         </item>
 
-        <item android:title="Configuration SOS Manager">
+        <item android:title="@string/configuration_sos_manager">
             <menu>
                 <item
-                    android:icon="@drawable/ic_watch_black_24dp"
                     android:id="@+id/nav_sos"
-                    android:title="Configuration du boîtier" />
+                    android:icon="@drawable/ic_watch_black_24dp"
+                    android:title="@string/configuration_du_bo_tier" />
             </menu>
         </item>
 

@@ -5,43 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="false">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <SeekBar
-            android:id="@+id/alertLevel"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:max="100"
-            android:progress="90"
-            android:textAlignment="center"
-            android:tooltipText="Réglage du niveau"
-            app:layout_constraintBottom_toTopOf="@+id/textLevel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchSound"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:targetApi="o" />
-
         <Switch
+            android:id="@+id/switchUnmute"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:checked="false"
+            android:clickable="false"
             android:contentDescription='Désactive le mode "Ne pas déranger" si il est activé'
             android:drawableLeft="@drawable/ic_ring_volume_black_24dp"
             android:drawablePadding="10dp"
-
             android:gravity="top"
-            android:id="@+id/switchUnmute"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_width="0dp"
             android:text='Désactiver "NPD" si alerte reçue'
             android:textSize="18sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/textViewNotifSon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,16 +34,16 @@
             app:layout_constraintVertical_chainStyle="packed" />
 
         <Switch
-            android:checked="true"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/ic_alarm_black_24dp"
-            android:gravity="top"
             android:id="@+id/switchSound"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:checked="true"
+            android:drawableStart="@drawable/ic_alarm_black_24dp"
+            android:drawablePadding="10dp"
+            android:gravity="top"
             android:showText="false"
             android:text="Alerte sonore"
             android:textSize="18sp"
@@ -86,13 +71,13 @@
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
-            android:gravity="center_vertical"
             android:id="@+id/textViewNotifEntete"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_width="0dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
             android:text="@string/txt_alarm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,12 +86,12 @@
 
         <TextView
             android:id="@+id/textViewNotifNpd"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_width="0dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/notifNpd"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/switchUnmute"
@@ -129,6 +114,24 @@
             app:layout_constraintTop_toBottomOf="@+id/alertLevel"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_optimizationLevel="chains" />
+
+        <SeekBar
+            android:id="@+id/alertLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:max="100"
+            android:progress="90"
+            android:textAlignment="center"
+            android:tooltipText="Réglage du niveau"
+            app:layout_constraintBottom_toTopOf="@+id/textLevel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchSound"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:targetApi="o" />
 
         <TextView
             android:id="@+id/levelValue"

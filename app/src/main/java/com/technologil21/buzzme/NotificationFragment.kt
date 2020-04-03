@@ -2,6 +2,7 @@ package com.technologil21.buzzme
 
 import android.app.NotificationManager
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -18,7 +19,11 @@ import kotlinx.android.synthetic.main.fragment_notification.*
 class NotificationFragment : Fragment() {
     private var askedLevel: Int = 80
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_notification, container, false)
     }
 
@@ -30,7 +35,8 @@ class NotificationFragment : Fragment() {
             updateViews()
         }
         switchUnmute.setOnClickListener {
-            setNotificationsDND()
+            if (android.os.Build.VERSION.SDK_INT >= 23)
+                setNotificationsDND()
             updateViews()
         }
 
@@ -63,8 +69,15 @@ class NotificationFragment : Fragment() {
                             Users can grant and deny access to Do Not Disturb configuration from here.
                     */
                     val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
-                    startActivityForResult(intent, Global.ON_ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS_CALLBACK_CODE)
-                    Toast.makeText(context, "Autorisez l'accès à " + getString(R.string.app_name), Toast.LENGTH_LONG).show()
+                    startActivityForResult(
+                        intent,
+                        Global.ON_ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS_CALLBACK_CODE
+                    )
+                    Toast.makeText(
+                        context,
+                        "Autorisez l'accès à " + getString(R.string.app_name),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         } else AppPreferences.disableDND = false
@@ -73,12 +86,18 @@ class NotificationFragment : Fragment() {
 
     private fun accessGranted(): Boolean {
         // Get the notification manager instance
-        val mNotificationManager: NotificationManager? = activity!!.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+        val mNotificationManager: NotificationManager? =
+            activity!!.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
         /*Set the interruption filter
                int INTERRUPTION_FILTER_ALL = Interruption filter constant
                - Normal interruption filter - no notifications are suppressed.
                 */
-        if (mNotificationManager?.isNotificationPolicyAccessGranted!!) {
+        if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mNotificationManager?.isNotificationPolicyAccessGranted!!
+            } else {
+                TODO("VERSION.SDK_INT < M")
+            }
+        ) {
             return true
         }
         return false
@@ -96,8 +115,8 @@ class NotificationFragment : Fragment() {
      * Initialisation des Views à partir des valeurs dans AppPreferences
      * */
     fun updateViews() {
-        var sonUnmute = AppPreferences.disableDND
-        var sonOnOff = AppPreferences.soundOn
+        val sonUnmute = AppPreferences.disableDND
+        val sonOnOff = AppPreferences.soundOn
         //DND
         switchUnmute.isChecked = AppPreferences.disableDND
         var image = if (sonUnmute) R.drawable.ic_ring_volume_black_24dp
@@ -109,7 +128,7 @@ class NotificationFragment : Fragment() {
         else R.drawable.ic_alarm_grey_24dp
         switchSound.setCompoundDrawablesWithIntrinsicBounds(image, 0, 0, 0)
         //niveau sonore
-        var niveau = AppPreferences.alertVol
+        val niveau = AppPreferences.alertVol
         alertLevel.progress = niveau
         levelValue.text = "$niveau%"
     }

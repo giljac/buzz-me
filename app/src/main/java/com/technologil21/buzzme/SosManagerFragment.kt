@@ -28,10 +28,10 @@ import java.lang.ref.WeakReference
 
 class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListener {
     companion object {
-        private val url = "http://192.168.4.1"
-        private val SSID = "SOS Manager"//"Bbox-11D449_plus"
+        private const val url = "http://192.168.4.1"
+        private const val SSID = "SOS Manager"//"Bbox-11D449_plus"
+        private const val PASS_WIFI = "Gilberte"//"33189D73D3"
         private val networkSSID = "\"$SSID\""
-        private val PASS_WIFI = "Gilberte"//"33189D73D3"
         private val passPhrase = "\"$PASS_WIFI\""
     }
 
@@ -46,9 +46,9 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // create ContextThemeWrapper from the original Activity Context with the custom theme
         val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme_NoActionBar)
@@ -91,9 +91,9 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
     }
 
     fun displayStatusConnection(
-            text: String = "",
-            progBarInvisible: Boolean = true,
-            visible: Boolean = true
+        text: String = "",
+        progBarInvisible: Boolean = true,
+        visible: Boolean = true
     ) {
         Log.d(TAG + "_display", text)
         statusView.text = text
@@ -105,7 +105,11 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
 
     override fun onDestroy() {
         Log.d(TAG, "onDestroy")
-        wifiLock.release()
+        try {
+            wifiLock.release()
+        } catch (e: Exception) {
+            Log.d(TAG, e.toString())
+        }
         super.onDestroy()
     }
 
@@ -133,46 +137,46 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
 
     private fun registerNetworkCallback() {
         val cm =
-                context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         Log.d(TAG, "registerNetworkCallback")
         cm.registerNetworkCallback(
-                Builder()
-                        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                        .build(),
-                object : NetworkCallback() {
+            Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build(),
+            object : NetworkCallback() {
 
-                    override fun onLosing(network: Network, maxMsToLive: Int) {
-                        super.onLosing(network, maxMsToLive)
-                        Log.d(TAG, "onLosing")
-                        if (connectedBefore) {
-                            displayStatusConnection("déconnexion en cours")
-                        }
+                override fun onLosing(network: Network, maxMsToLive: Int) {
+                    super.onLosing(network, maxMsToLive)
+                    Log.d(TAG, "onLosing")
+                    if (connectedBefore) {
+                        displayStatusConnection("déconnexion en cours")
                     }
+                }
 
-                    override fun onLost(network: Network) {
-                        super.onLost(network)
+                override fun onLost(network: Network) {
+                    super.onLost(network)
 //                        Log.d(TAG, "onLost")
 //                        if (connectedBefore) {
 //                            displayStatusConnection("connexion perdue", true, true)
 //                        }
-                    }
+                }
 
-                    override fun onAvailable(network: Network) {
-                        super.onAvailable(network)
-                        Log.d(TAG, "onAvailable")
-                        if (!connectedBefore) {
-                            val connected = cm.bindProcessToNetwork(network)
-                            if (connected) {
-                                Log.d(TAG, "connected to wifi")
-                                goForSsid()
-                            }
+                override fun onAvailable(network: Network) {
+                    super.onAvailable(network)
+                    Log.d(TAG, "onAvailable")
+                    if (!connectedBefore) {
+                        val connected = cm.bindProcessToNetwork(network)
+                        if (connected) {
+                            Log.d(TAG, "connected to wifi")
+                            goForSsid()
                         }
                     }
-                })
+                }
+            })
     }
 
     private class PrepareConnectToMySsidTask(activity: SosManagerFragment) :
-            AsyncTask<String, String, Boolean>() {
+        AsyncTask<String, String, Boolean>() {
         private val TAG = "toto_PrepareConnect"
 
         private val scanStopped = 0
@@ -182,7 +186,7 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
         private var userOk4ConnWifi = false
         private val activityWeakReference = WeakReference<SosManagerFragment>(activity)
         val wifiManager =
-                activity.context!!.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            activity.context!!.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         override fun onProgressUpdate(vararg values: String?) {
             super.onProgressUpdate(*values)
@@ -190,10 +194,10 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
             for (i in values.indices) when (i) {
                 0 -> activity.statusView.text = values[i]
                 1 -> if (values[i]?.toBoolean()!!) activity.indeterminateBar.visibility =
-                        INVISIBLE
+                    INVISIBLE
                 //1 -> activity.indeterminateBar.isInvisible = values[i]?.toBoolean() ?: true
                 2 -> if (values[i]?.toBoolean()!!) activity.statusView.visibility =
-                        VISIBLE
+                    VISIBLE
                 //2 -> activity.statusView.isVisible = values[i]?.toBoolean() ?: true
             }
             activity.btnConnect.visibility = INVISIBLE // isVisible = false
@@ -286,7 +290,7 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
         private val wifiScanReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val success =
-                        intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
+                    intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
                 Log.d(TAG, "Scan terminé: $success")
                 val results = wifiManager.scanResults
                 for (result in results) {
@@ -324,13 +328,13 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
     }
 
     private class RunConnectToMySsidTask(activity: SosManagerFragment) :
-            AsyncTask<Void, String, Boolean>() {
+        AsyncTask<Void, String, Boolean>() {
 
         private val TAG = "toto_RunConnect"
 
         private val activityWeakReference = WeakReference<SosManagerFragment>(activity)
         val wifiManager =
-                activity.context!!.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            activity.context!!.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         override fun onProgressUpdate(vararg values: String?) {
             super.onProgressUpdate(*values)
@@ -338,10 +342,10 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
             for (i in values.indices) when (i) {
                 0 -> activity.statusView.text = values[i]
                 1 -> if (values[i]?.toBoolean()!!) activity.indeterminateBar.visibility =
-                        INVISIBLE
+                    INVISIBLE
                 //1 -> activity.indeterminateBar.isInvisible = values[i]?.toBoolean() ?: true
                 2 -> if (values[i]?.toBoolean()!!) activity.statusView.visibility =
-                        VISIBLE
+                    VISIBLE
             }
             activity.btnConnect.visibility = INVISIBLE
             //activity.btnConnect.isVisible = false
@@ -352,8 +356,8 @@ class SosManagerFragment : Fragment(), WifiConnectDialog.WifiConnectDialogListen
             val activity = activityWeakReference.get() ?: return false
             try {
                 Log.d(
-                        TAG,
-                        "Wifi connected @ SSID ${wifiManager.connectionInfo.ssid}"
+                    TAG,
+                    "Wifi connected @ SSID ${wifiManager.connectionInfo.ssid}"
                 )
                 if (wifiManager.connectionInfo.ssid == networkSSID) {
                     publishProgress("SOS Manager connecté", "true", "true")

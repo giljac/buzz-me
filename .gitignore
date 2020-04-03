@@ -1,5 +1,7 @@
 *.iml
+*.7z
 .gradle
+/app/release
 /local.properties
 /.idea/caches
 /.idea/libraries
