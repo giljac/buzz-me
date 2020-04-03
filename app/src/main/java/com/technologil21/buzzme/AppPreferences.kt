@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 object AppPreferences {
     private lateinit var prefs: SharedPreferences
     private const val PREFS_FILENAME = "com.technologil21.buzzme.prefs"
+
     /**
      * list of app specific preferences:
      * chaque paire contient le nom de la preference dans le fichier
@@ -43,5 +44,4 @@ object AppPreferences {
     var contactsL: String?
         get() = prefs.getString(CONTACTS_LIST.first, CONTACTS_LIST.second)
         set(value) = prefs.edit().putString(CONTACTS_LIST.first, value).apply()
-
 }

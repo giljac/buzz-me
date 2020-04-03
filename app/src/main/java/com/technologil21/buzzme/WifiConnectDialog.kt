@@ -25,9 +25,8 @@ class WifiConnectDialog : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = this.context?.let { AlertDialog.Builder(it) }
-        val msg = "Cette opération va déconnecter/connecter le wifi,\nvoulez-vous continuer?"
         builder!!.setTitle("Attention!")
-                .setMessage(msg)
+                .setMessage("Cette opération va déconnecter/connecter le wifi,\nvoulez-vous continuer?")
                 .setNegativeButton("Annuler") { dialog, which ->
 //                    callback.onDialogCancelClicked()
                 }
